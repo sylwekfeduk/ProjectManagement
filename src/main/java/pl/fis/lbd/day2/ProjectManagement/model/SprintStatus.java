@@ -1,4 +1,4 @@
-package pl.fis.lbd.day2.ProjectManagement.entity;
+package pl.fis.lbd.day2.ProjectManagement.model;
 
 public enum SprintStatus {
 

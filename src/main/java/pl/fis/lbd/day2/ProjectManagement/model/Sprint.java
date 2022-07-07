@@ -1,9 +1,7 @@
-package pl.fis.lbd.day2.ProjectManagement.entity;
+package pl.fis.lbd.day2.ProjectManagement.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Entity
