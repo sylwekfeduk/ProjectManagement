@@ -57,6 +57,13 @@ public class UserStory {
         this.userStoryStatus = userStoryStatus;
     }
 
+    public UserStory(String name, String description, Integer numberOfStoryPoints, UserStoryStatus userStoryStatus) {
+        this.name = name;
+        this.description = description;
+        this.numberOfStoryPoints = numberOfStoryPoints;
+        this.userStoryStatus = userStoryStatus;
+    }
+
     public String getName() {
         return name;
     }
@@ -116,10 +123,10 @@ public class UserStory {
         return new EqualsBuilder().append(id, userStory.id).append(name, userStory.name).append(description, userStory.description).append(attachments, userStory.attachments).append(numberOfStoryPoints, userStory.numberOfStoryPoints).append(userStoryStatus, userStory.userStoryStatus).append(sprints, userStory.sprints).isEquals();
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(id).append(name).append(description).append(attachments).append(numberOfStoryPoints).append(userStoryStatus).append(sprints).toHashCode();
-    }
+    //@Override
+   // public int hashCode() {
+      //  return new HashCodeBuilder(17, 37).append(id).append(name).append(description).append(attachments).append(numberOfStoryPoints).append(userStoryStatus).append(sprints).toHashCode();
+    //}
 
     @Override
     public String toString() {

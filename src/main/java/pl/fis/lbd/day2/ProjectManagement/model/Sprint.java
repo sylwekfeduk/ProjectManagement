@@ -53,6 +53,14 @@ public class Sprint {
         this.userStories = userStories;
     }
 
+    public Sprint(Long id, LocalDate startDate, LocalDate endDate, SprintStatus sprintStatus, Set<UserStory> userStories) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sprintStatus = sprintStatus;
+        this.userStories = userStories;
+    }
+
     public Sprint(LocalDate startDate, LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
@@ -115,10 +123,10 @@ public class Sprint {
         return new org.apache.commons.lang3.builder.EqualsBuilder().append(id, sprint.id).append(startDate, sprint.startDate).append(endDate, sprint.endDate).append(description, sprint.description).append(sprintStatus, sprint.sprintStatus).append(userStories, sprint.userStories).isEquals();
     }
 
-    @Override
-    public int hashCode() {
-        return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37).append(id).append(startDate).append(endDate).append(description).append(sprintStatus).append(userStories).toHashCode();
-    }
+    //@Override
+    //public int hashCode() {
+        //return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37).append(id).append(startDate).append(endDate).append(description).append(sprintStatus).append(userStories).toHashCode();
+   // }
 
     @Override
     public String toString() {

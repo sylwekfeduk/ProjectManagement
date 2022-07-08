@@ -38,6 +38,6 @@ public class SprintService {
     }
 
     public List<Sprint> getAllSprintsBetweenDates(LocalDate startDate, LocalDate endDate) {
-        return sprintRepository.findSprintsBetweenDatesByStartDateAndEndDate(startDate, endDate);
+        return sprintRepository.findSprintsByStartDateAfterAndEndDateBefore(startDate, endDate);
     }
 }
