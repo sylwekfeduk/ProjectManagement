@@ -8,6 +8,8 @@ import pl.fis.lbd.day2.ProjectManagement.model.SprintStatus;
 import pl.fis.lbd.day2.ProjectManagement.model.UserStory;
 import pl.fis.lbd.day2.ProjectManagement.repository.SprintRepository;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,5 +35,9 @@ public class SprintService {
     public Set<UserStory> getAllUserStoriesFromSprintById(Long id) {
         Sprint sprint = sprintRepository.findSprintById(id);
         return sprint.getUserStories();
+    }
+
+    public List<Sprint> getAllSprintsBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return sprintRepository.findSprintsBetweenDatesByStartDateAndEndDate(startDate, endDate);
     }
 }

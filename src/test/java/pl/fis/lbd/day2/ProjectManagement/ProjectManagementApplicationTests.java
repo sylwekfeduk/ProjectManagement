@@ -15,6 +15,8 @@ import pl.fis.lbd.day2.ProjectManagement.service.UserStoryService;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @SpringBootTest
@@ -50,6 +52,15 @@ class ProjectManagementApplicationTests {
 		userStoryService.saveUserStory(new UserStory("New tab", "Create new tab in web application", UserStoryStatus.REVIEW));
 		Set<UserStory> userStories = sprintService.getAllUserStoriesFromSprintById(1L);
 		Assertions.assertNotNull(userStories);
+	}
+
+	@Test
+	void whenGettingSprintsBetweenDates_thenOk() {
+		List<Sprint> temp = new ArrayList<>(3);
+		temp.add(sprintService.saveSprint(new Sprint(LocalDate.of( 2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED)));
+		temp.add(sprintService.saveSprint(new Sprint(LocalDate.of( 2022,7,30), LocalDate.of(2022,8,1), SprintStatus.FINISHED)));
+		temp.add(sprintService.saveSprint(new Sprint(LocalDate.of( 2022,6,15), LocalDate.of(2022,7,2), SprintStatus.INPROGRESS)));
+		Assertions.assertNotNull(sprintService.getAllSprintsBetweenDates(LocalDate.of(2022,6,14), LocalDate.of(2022,7,3)));
 	}
 
 	@Test
