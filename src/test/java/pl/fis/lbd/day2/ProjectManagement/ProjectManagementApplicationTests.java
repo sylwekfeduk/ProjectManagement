@@ -1,13 +1,59 @@
 package pl.fis.lbd.day2.ProjectManagement;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pl.fis.lbd.day2.ProjectManagement.exception.SprintNotSavedException;
+import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotSavedException;
+import pl.fis.lbd.day2.ProjectManagement.model.Sprint;
+import pl.fis.lbd.day2.ProjectManagement.model.SprintStatus;
+import pl.fis.lbd.day2.ProjectManagement.model.UserStory;
+import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
+import pl.fis.lbd.day2.ProjectManagement.service.SprintService;
+import pl.fis.lbd.day2.ProjectManagement.service.UserStoryService;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.Assert.assertThrows;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 class ProjectManagementApplicationTests {
 
+	@Autowired
+	SprintService sprintService;
+
+	@Autowired
+	UserStoryService userStoryService;
+
 	@Test
 	void contextLoads() {
+	}
+
+	@Test
+	void whenSavingSprint_thenOk() {
+		Sprint sprintSaved = sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED));
+		Assertions.assertNotNull(sprintSaved);
+	}
+
+	@Test
+	void whenSavingSprint_thenExceptionSprintNotSaved() {
+		assertThatExceptionOfType(SprintNotSavedException.class)
+				.isThrownBy(() -> sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30))))
+				.withMessage("Unable to save sprint");
+	}
+
+	@Test
+	void whenSavingUserStory_thenOk() {
+		UserStory userStorySaved = userStoryService.saveUserStory(new UserStory("Adding basket feature", "Create adding new basket feature", UserStoryStatus.DONE));
+		Assertions.assertNotNull(userStorySaved);
+	}
+
+	@Test
+	void whenSavingUserStory_thenExceptionUserStoryNotSaved() {
+		assertThatExceptionOfType(UserStoryNotSavedException.class)
+				.isThrownBy(() -> userStoryService.saveUserStory(new UserStory("Test")))
+				.withMessage("Unable to save user story");
 	}
 
 }

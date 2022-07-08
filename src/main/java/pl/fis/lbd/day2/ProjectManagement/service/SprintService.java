@@ -18,14 +18,12 @@ public class SprintService {
     }
 
     @Transactional(rollbackFor = SprintNotSavedException.class)
-    public void saveSprint(Sprint sprint) {
+    public Sprint saveSprint(Sprint sprint) {
         if(sprint.getStartDate() != null && sprint.getEndDate() != null && sprint.getStartDate().isBefore(sprint.getEndDate())
-                && sprint.getSprintStatus().getName().equals(SprintStatus.CANCELED.getName())
-                || sprint.getSprintStatus().getName().equals(SprintStatus.PENDING.getName())
-                || sprint.getSprintStatus().getName().equals(SprintStatus.FINISHED.getName())
-                || sprint.getSprintStatus().getName().equals(SprintStatus.INPROGRESS.getName()))
+                && sprint.getSprintStatus() != null)
                     sprintRepository.save(sprint);
         else
             throw new SprintNotSavedException("Unable to save sprint");
+        return sprint;
     }
 }

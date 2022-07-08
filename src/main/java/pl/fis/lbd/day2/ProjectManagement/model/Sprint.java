@@ -39,6 +39,11 @@ public class Sprint {
     public Sprint() {
     }
 
+    public Sprint(LocalDate startDate, LocalDate endDate) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     public Sprint(LocalDate startDate, LocalDate endDate, SprintStatus sprintStatus) {
         this.startDate = startDate;
         this.endDate = endDate;

@@ -17,15 +17,15 @@ public class UserStoryService {
     }
 
     @Transactional(rollbackFor = UserStoryNotSavedException.class)
-    public void saveUserStory(UserStory userStory) {
+    public UserStory saveUserStory(UserStory userStory) {
         if(userStory.getName() != null && userStory.getDescription() != null) {
-            //if(userStory.getUserStoryStatus().getName() == null) {
-                //userStory.setUserStoryStatus(UserStoryStatus.TODO);
-            //}
+            if(userStory.getUserStoryStatus().getName() == null) {
+                userStory.setUserStoryStatus(UserStoryStatus.TODO);
+            }
             userStoryRepository.save(userStory);
         }
         else
             throw new UserStoryNotSavedException("Unable to save user story");
-
+        return userStory;
     }
 }

@@ -40,6 +40,10 @@ public class UserStory {
     public UserStory() {
     }
 
+    public UserStory(String name) {
+        this.name = name;
+    }
+
     public UserStory(String name, String description, UserStoryStatus userStoryStatus) {
         this.name = name;
         this.description = description;
