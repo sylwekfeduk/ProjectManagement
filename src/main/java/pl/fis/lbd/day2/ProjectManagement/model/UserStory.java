@@ -44,6 +44,13 @@ public class UserStory {
         this.name = name;
     }
 
+    public UserStory(Long id, String name, String description, UserStoryStatus userStoryStatus) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.userStoryStatus = userStoryStatus;
+    }
+
     public UserStory(String name, String description, UserStoryStatus userStoryStatus) {
         this.name = name;
         this.description = description;

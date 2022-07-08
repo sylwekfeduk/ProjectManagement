@@ -5,7 +5,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.fis.lbd.day2.ProjectManagement.exception.SprintNotSavedException;
 import pl.fis.lbd.day2.ProjectManagement.model.Sprint;
 import pl.fis.lbd.day2.ProjectManagement.model.SprintStatus;
+import pl.fis.lbd.day2.ProjectManagement.model.UserStory;
 import pl.fis.lbd.day2.ProjectManagement.repository.SprintRepository;
+
+import java.util.Set;
 
 
 @Service
@@ -25,5 +28,10 @@ public class SprintService {
         else
             throw new SprintNotSavedException("Unable to save sprint");
         return sprint;
+    }
+
+    public Set<UserStory> getAllUserStoriesFromSprintById(Long id) {
+        Sprint sprint = sprintRepository.findSprintById(id);
+        return sprint.getUserStories();
     }
 }

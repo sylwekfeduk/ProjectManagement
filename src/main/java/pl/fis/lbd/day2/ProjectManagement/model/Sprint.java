@@ -28,7 +28,7 @@ public class Sprint {
     @Enumerated(EnumType.STRING)
     private SprintStatus sprintStatus;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "sprint_user_story",
             joinColumns = @JoinColumn(name = "sprint_id"),
@@ -37,6 +37,20 @@ public class Sprint {
     private Set<UserStory> userStories;
 
     public Sprint() {
+    }
+
+    public Sprint(Long id, LocalDate startDate, LocalDate endDate, SprintStatus sprintStatus) {
+        this.id = id;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sprintStatus = sprintStatus;
+    }
+
+    public Sprint(LocalDate startDate, LocalDate endDate, SprintStatus sprintStatus, Set<UserStory> userStories) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.sprintStatus = sprintStatus;
+        this.userStories = userStories;
     }
 
     public Sprint(LocalDate startDate, LocalDate endDate) {

@@ -13,9 +13,9 @@ import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
 import pl.fis.lbd.day2.ProjectManagement.service.SprintService;
 import pl.fis.lbd.day2.ProjectManagement.service.UserStoryService;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @SpringBootTest
 class ProjectManagementApplicationTests {
@@ -39,8 +39,17 @@ class ProjectManagementApplicationTests {
 	@Test
 	void whenSavingSprint_thenExceptionSprintNotSaved() {
 		assertThatExceptionOfType(SprintNotSavedException.class)
-				.isThrownBy(() -> sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30))))
+				.isThrownBy(() -> sprintService.saveSprint(new Sprint(LocalDate.of(2022,06,15), LocalDate.of(2022,06,30))))
 				.withMessage("Unable to save sprint");
+	}
+
+	@Test
+	void whenGettingSprintById_thenOk() {
+		sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED));
+		userStoryService.saveUserStory(new UserStory("Adding basket feature", "Create adding new basket feature", UserStoryStatus.DONE));
+		userStoryService.saveUserStory(new UserStory("New tab", "Create new tab in web application", UserStoryStatus.REVIEW));
+		Set<UserStory> userStories = sprintService.getAllUserStoriesFromSprintById(1L);
+		Assertions.assertNotNull(userStories);
 	}
 
 	@Test

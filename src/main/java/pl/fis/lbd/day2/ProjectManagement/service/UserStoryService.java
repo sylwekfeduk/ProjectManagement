@@ -7,6 +7,8 @@ import pl.fis.lbd.day2.ProjectManagement.model.UserStory;
 import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
 import pl.fis.lbd.day2.ProjectManagement.repository.UserStoryRepository;
 
+import java.util.Set;
+
 @Service
 public class UserStoryService {
 

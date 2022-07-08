@@ -1,5 +1,7 @@
 package pl.fis.lbd.day2.ProjectManagement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,10 +26,10 @@ public class ProjectManagementApplication {
 
 	@PostConstruct
 	public void createSprintAndSave () {
-		Sprint sprint = new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED);
-		sprintService.saveSprint(sprint);
-		UserStory userStory = new UserStory("Adding basket feature", "Create adding new basket feature", UserStoryStatus.DONE);
-		userStoryService.saveUserStory(userStory);
+		//Sprint sprint = new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED);
+		//sprintService.saveSprint(sprint);
+		//UserStory userStory = new UserStory("Adding basket feature", "Create adding new basket feature", UserStoryStatus.DONE);
+		//userStoryService.saveUserStory(userStory);
 	}
 
 	public static void main(String[] args) {
