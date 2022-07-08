@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import pl.fis.lbd.day2.ProjectManagement.exception.SprintNotSavedException;
 import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotSavedException;
@@ -16,6 +17,7 @@ import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
 import pl.fis.lbd.day2.ProjectManagement.service.SprintService;
 import pl.fis.lbd.day2.ProjectManagement.service.UserStoryService;
 import static org.assertj.core.api.Assertions.*;
+import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -88,6 +90,13 @@ class ProjectManagementApplicationTests {
 		userStories.add(userStoryService.saveUserStory(new UserStory("New tab", "Create new tab in web application", 7, UserStoryStatus.DONE)));
 		sprintService.saveSprint(new Sprint( LocalDate.of(2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED, userStories));
 		assertThat(userStoryService.getNumberOfStoryPointsInGivenSprint(1L)).isEqualTo(17);
+	}
+
+	@Test
+	void givenUserStoriesDataCreated_whenFindAllPaginated_thenSuccess() {
+		Page<UserStory> retrievedUserStories = userStoryService.findPagesWithPageNumberAndSizeOfPage(0, 10);
+		assertThat(retrievedUserStories.getTotalPages()).isEqualTo(10);
+		assertThat(retrievedUserStories.getContent().size()).isEqualTo(10);
 	}
 
 }

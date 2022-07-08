@@ -1,5 +1,7 @@
 package pl.fis.lbd.day2.ProjectManagement.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotSavedException;
@@ -32,4 +34,9 @@ public class UserStoryService {
     public int getNumberOfStoryPointsInGivenSprint(Long id) {
         return userStoryRepository.countStoryPointsOfSprintById(id);
     }
+
+    public Page<UserStory> findPagesWithPageNumberAndSizeOfPage(int pageNumber, int pageSize) {
+        return userStoryRepository.findAll(PageRequest.of(pageNumber,pageSize));
+    }
+
 }
