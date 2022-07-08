@@ -51,6 +51,12 @@ public class UserStory {
         this.userStoryStatus = userStoryStatus;
     }
 
+    public UserStory(String name, String description, Integer numberOfStoryPoints) {
+        this.name = name;
+        this.description = description;
+        this.numberOfStoryPoints = numberOfStoryPoints;
+    }
+
     public UserStory(String name, String description, UserStoryStatus userStoryStatus) {
         this.name = name;
         this.description = description;
