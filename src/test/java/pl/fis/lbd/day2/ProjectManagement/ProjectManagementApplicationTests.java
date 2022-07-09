@@ -54,10 +54,10 @@ class ProjectManagementApplicationTests {
 	@Test
 	void whenGettingUserStoriesFromSprintById_thenOk() {
 		Set<UserStory> userStories = new HashSet<>(2);
-		sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED, userStories));
+		Sprint savedSprint = sprintService.saveSprint(new Sprint(LocalDate.of( 2022,06,15), LocalDate.of(2022,06,30), SprintStatus.CANCELED, userStories));
 		userStories.add(userStoryService.saveUserStory(new UserStory("Adding basket feature", "Create adding new basket feature", UserStoryStatus.DONE)));
 		userStories.add(userStoryService.saveUserStory(new UserStory("New tab", "Create new tab in web application", UserStoryStatus.REVIEW)));
-		Set<UserStory> userStoriesReceived = sprintService.getAllUserStoriesFromSprintById(1L);
+		Set<UserStory> userStoriesReceived = sprintService.getAllUserStoriesFromSprintById(savedSprint.getId());
 		assertThat(userStoriesReceived.contains(userStories));
 	}
 
@@ -88,15 +88,22 @@ class ProjectManagementApplicationTests {
 		Set<UserStory> userStories = new HashSet<>(2);
 		userStories.add(userStoryService.saveUserStory(new UserStory("Adding basket feature", "Create adding new basket feature", 10, UserStoryStatus.DONE)));
 		userStories.add(userStoryService.saveUserStory(new UserStory("New tab", "Create new tab in web application", 7, UserStoryStatus.DONE)));
-		sprintService.saveSprint(new Sprint( LocalDate.of(2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED, userStories));
-		assertThat(userStoryService.getNumberOfStoryPointsInGivenSprint(1L)).isEqualTo(17);
+		Sprint savedSprint = sprintService.saveSprint(new Sprint( LocalDate.of(2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED, userStories));
+		assertThat(userStoryService.getNumberOfStoryPointsInGivenSprint(savedSprint.getId())).isEqualTo(17);
 	}
 
 	@Test
 	void givenUserStoriesDataCreated_whenFindAllPaginated_thenSuccess() {
 		Page<UserStory> retrievedUserStories = userStoryService.findPagesWithPageNumberAndSizeOfPage(0, 10);
-		assertThat(retrievedUserStories.getTotalPages()).isEqualTo(10);
 		assertThat(retrievedUserStories.getContent().size()).isEqualTo(10);
+	}
+
+	@Test
+	void givenUserStoriesDataCreated_whenFindAllPaginatedAndSort_thenSuccess() {
+		Sprint sprint = sprintService.saveSprint(new Sprint(LocalDate.of(2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED));
+		Sprint sprint1 = sprintService.saveSprint(new Sprint(LocalDate.of( 2022,1,15), LocalDate.of(2022,7,5), SprintStatus.INPROGRESS));
+		Page<Sprint> retrievedSprints = sprintService.findPagesWithPageNumberAndSizeOfPageAndSortBy(0, 10, "startDate");
+		assertThat(retrievedSprints.getContent().containsAll(List.of(sprint, sprint1)));
 	}
 
 }

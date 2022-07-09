@@ -76,6 +76,10 @@ public class Sprint {
         return startDate;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDate getEndDate() {
         return endDate;
     }
@@ -128,7 +132,7 @@ public class Sprint {
         //return new org.apache.commons.lang3.builder.HashCodeBuilder(17, 37).append(id).append(startDate).append(endDate).append(description).append(sprintStatus).append(userStories).toHashCode();
    // }
 
-    @Override
+    /*@Override
     public String toString() {
         return "Sprint{" +
                 "id=" + id +
@@ -138,5 +142,5 @@ public class Sprint {
                 ", sprintStatus=" + sprintStatus +
                 ", userStories=" + userStories +
                 '}';
-    }
+    }*/
 }

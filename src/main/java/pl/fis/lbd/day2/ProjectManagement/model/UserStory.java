@@ -34,7 +34,7 @@ public class UserStory {
     @Enumerated(EnumType.STRING)
     private UserStoryStatus userStoryStatus;
 
-    @ManyToMany(mappedBy = "userStories")
+    @ManyToMany(mappedBy = "userStories", fetch = FetchType.EAGER)
     private Set<Sprint> sprints;
 
     public UserStory() {
@@ -134,16 +134,16 @@ public class UserStory {
       //  return new HashCodeBuilder(17, 37).append(id).append(name).append(description).append(attachments).append(numberOfStoryPoints).append(userStoryStatus).append(sprints).toHashCode();
     //}
 
-    @Override
-    public String toString() {
-        return "UserStory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", attachments=" + Arrays.toString(attachments) +
-                ", numberOfStoryPoints=" + numberOfStoryPoints +
-                ", userStoryStatus=" + userStoryStatus +
-                ", sprints=" + sprints +
-                '}';
-    }
+    //@Override
+    //public String toString() {
+      //  return "UserStory{" +
+        //        "id=" + id +
+          //      ", name='" + name + '\'' +
+            //    ", description='" + description + '\'' +
+              //  ", attachments=" + Arrays.toString(attachments) +
+                //", numberOfStoryPoints=" + numberOfStoryPoints +
+                //", userStoryStatus=" + userStoryStatus +
+                //", sprints=" + sprints +
+                //'}';
+    //}
 }
