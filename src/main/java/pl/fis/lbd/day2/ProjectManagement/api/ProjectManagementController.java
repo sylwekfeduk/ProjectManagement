@@ -1,7 +1,12 @@
 package pl.fis.lbd.day2.ProjectManagement.api;
 
 import net.bytebuddy.asm.Advice;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.fis.lbd.day2.ProjectManagement.dto.*;
 import pl.fis.lbd.day2.ProjectManagement.mapper.SprintMapper;
@@ -27,6 +32,7 @@ public class ProjectManagementController {
     private final SprintService sprintService;
     private final UserStoryService userStoryService;
     private final UserStoryMapper userStoryMapper;
+    private static final Logger LOG = LoggerFactory.getLogger(ProjectManagementController.class);
 
     public ProjectManagementController(SprintService sprintService, UserStoryService userStoryService, UserStoryMapper userStoryMapper) {
         this.sprintService = sprintService;
@@ -98,5 +104,12 @@ public class ProjectManagementController {
     @DeleteMapping(value = "/userStories/{id}")
     public void deleteUserStoryByGivenId(@PathVariable Long id) {
         userStoryService.deleteUserStoryById(id);
+    }
+
+    @GetMapping(value = "/loggedInUser")
+    public void showLoggedInUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication authentication = context.getAuthentication();
+        LOG.info("Logged in user " + authentication.getName() + " " + authentication.getAuthorities());
     }
 }
