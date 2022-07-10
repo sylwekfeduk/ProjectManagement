@@ -5,10 +5,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotExistException;
 import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotSavedException;
+import pl.fis.lbd.day2.ProjectManagement.model.Sprint;
 import pl.fis.lbd.day2.ProjectManagement.model.UserStory;
 import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
 import pl.fis.lbd.day2.ProjectManagement.repository.UserStoryRepository;
+
+import java.util.Optional;
 
 @Service
 public class UserStoryService {
@@ -38,6 +42,22 @@ public class UserStoryService {
 
     public Page<UserStory> findPagesWithPageNumberAndSizeOfPage(int pageNumber, int pageSize) {
         return userStoryRepository.findAll(PageRequest.of(pageNumber, pageSize));
+    }
+
+    public UserStory getUserStoryById(Long id) {
+        return userStoryRepository.findById(id).orElseThrow(() -> new UserStoryNotExistException("User story with given id doesn't exist"));
+    }
+
+    public Page<UserStory> findPagesWithPageNumberAndSizeOfPageAndSortBy(int pageNumber, int pageSize, String sortColumn) {
+        return userStoryRepository.findAll(PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Order.desc(sortColumn))));
+    }
+
+    public void deleteUserStoryById(Long id) {
+        userStoryRepository.deleteById(id);
+    }
+
+    public byte[] getAttachmentFromUserStory(Long id) {
+        return userStoryRepository.findById(id).orElseThrow(() -> new UserStoryNotExistException("User story with given id doesn't exist")).getAttachments();
     }
 
 }

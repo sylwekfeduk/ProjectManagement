@@ -1,14 +1,20 @@
 package pl.fis.lbd.day2.ProjectManagement;
 
-import org.junit.After;
-import org.junit.Before;
+import org.apache.commons.lang3.reflect.TypeUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import pl.fis.lbd.day2.ProjectManagement.dto.SprintResponseDto;
+import pl.fis.lbd.day2.ProjectManagement.dto.UserStoryDto;
 import pl.fis.lbd.day2.ProjectManagement.exception.SprintNotSavedException;
+import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotExistException;
 import pl.fis.lbd.day2.ProjectManagement.exception.UserStoryNotSavedException;
 import pl.fis.lbd.day2.ProjectManagement.model.Sprint;
 import pl.fis.lbd.day2.ProjectManagement.model.SprintStatus;
@@ -17,7 +23,6 @@ import pl.fis.lbd.day2.ProjectManagement.model.UserStoryStatus;
 import pl.fis.lbd.day2.ProjectManagement.service.SprintService;
 import pl.fis.lbd.day2.ProjectManagement.service.UserStoryService;
 import static org.assertj.core.api.Assertions.*;
-import static org.hamcrest.Matchers.hasSize;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,7 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class ProjectManagementApplicationTests {
 
 	@Autowired
@@ -33,6 +38,9 @@ class ProjectManagementApplicationTests {
 
 	@Autowired
 	UserStoryService userStoryService;
+
+	private RestTemplate restTemplate = new RestTemplate();
+	private static final String baseUrl = "http://localhost:8080/api/v1.0";
 
 	@Test
 	void contextLoads() {
@@ -104,6 +112,29 @@ class ProjectManagementApplicationTests {
 		Sprint sprint1 = sprintService.saveSprint(new Sprint(LocalDate.of( 2022,1,15), LocalDate.of(2022,7,5), SprintStatus.INPROGRESS));
 		Page<Sprint> retrievedSprints = sprintService.findPagesWithPageNumberAndSizeOfPageAndSortBy(0, 10, "startDate");
 		assertThat(retrievedSprints.getContent().containsAll(List.of(sprint, sprint1)));
+	}
+
+	@Test
+	public void whenGettingDescriptionOfGivenUserStory_thenOk() {
+		ResponseEntity<String> response = restTemplate.getForEntity(baseUrl + "/descriptionOfUserStory/1", String.class);
+		assertThat(response.getStatusCodeValue()).isEqualTo(200);
+	}
+
+	@Test
+	public void whenUpdatingStatusOfSprint_thenOk() {
+		Sprint sprint = sprintService.saveSprint(new Sprint(LocalDate.of(2022,6,15), LocalDate.of(2022,6,30), SprintStatus.CANCELED));
+		SprintStatus statusUpdated = SprintStatus.INPROGRESS;
+		restTemplate.put(baseUrl + "/sprintStatus/" + sprint.getId() + "?status=" + statusUpdated, SprintStatus.class);
+		assertThat(sprintService.getSprintById(sprint.getId()).getSprintStatus()).isEqualTo(statusUpdated);
+	}
+
+	@Test
+	public void whenDeletingUserStoryById_thenOk() {
+		Long idOfDeletingUserStory = 1L;
+		restTemplate.delete(baseUrl + "/userStories/" + idOfDeletingUserStory);
+		assertThatExceptionOfType(UserStoryNotExistException.class)
+				.isThrownBy(() -> userStoryService.getUserStoryById(idOfDeletingUserStory))
+				.withMessage("User story with given id doesn't exist");
 	}
 
 }

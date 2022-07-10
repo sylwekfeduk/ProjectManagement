@@ -13,4 +13,6 @@ public interface UserStoryRepository extends PagingAndSortingRepository<UserStor
            "WHERE u.user_story_status='DONE' and s.sprint_id = ?1",
             nativeQuery=true)
     int countStoryPointsOfSprintById(Long id);
+
+
 }

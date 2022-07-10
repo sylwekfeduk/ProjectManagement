@@ -54,11 +54,18 @@ public class SprintService {
 
     @Transactional(rollbackFor = UserStoryNotSavedException.class)
     public void createSprintWithUserStories(Sprint sprint, Set<UserStory> userStories) throws UserStoryNotSavedException {
-        Sprint savedSprint = sprintRepository.save(sprint);
         for(UserStory userStory : userStories) {
-            userStoryRepository.save(userStory);
+            sprint.addUserStories(userStory);
         }
-        savedSprint.setUserStories(userStories);
-        sprintRepository.save(savedSprint);
+        sprintRepository.save(sprint);
     }
+
+    public Sprint getSprintById(Long id) {
+        return sprintRepository.findSprintById(id);
+    }
+
+    public List<Sprint> getAllSprints() {
+        return (List<Sprint>) sprintRepository.findAll();
+    }
+
 }

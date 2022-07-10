@@ -116,6 +116,16 @@ public class Sprint {
         this.userStories = userStories;
     }
 
+    public void addUserStories(UserStory userStory) {
+        this.userStories.add(userStory);
+        userStory.getSprints().add(this);
+    }
+
+    public void removeUserStories(UserStory userStory) {
+        this.userStories.remove(userStory);
+        userStory.getSprints().remove(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
